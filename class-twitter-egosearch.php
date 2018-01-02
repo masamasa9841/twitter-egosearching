@@ -27,7 +27,7 @@ class Twitter_Egosearch {
 		if ( ! is_wp_error( $rss ) ) {
 			$maxitems        = $rss->get_item_quantity( 5 );
 			$this->rss_items = $rss->get_items( 0, $maxitems );
-			$now             = date( 'Y.m.d' );
+			$now             = date_i18n( 'Y.m.d' );
 			$hoge            = false;
 			foreach ( $this->rss_items as $item ) {
 				// Get Tweet date.
@@ -47,7 +47,7 @@ class Twitter_Egosearch {
 	 * Echo html function.
 	 */
 	public function dashboard_egosearch() {
-		$now = date( 'Y.m.d' );
+		$now = date_i18n( 'Y.m.d' );
 		foreach ( $this->rss_items as $item ) {
 			$date = $item->get_date( 'Y.m.d' );
 			if ( $date === $now ) {
