@@ -22,12 +22,8 @@ class Twitter_Egosearch {
 	 * Dashboad function.
 	 */
 	public function add_dashboard_egosearch_metabox() {
-		$blog_url      = get_bloginfo( 'url' );
-		$pattern       = '/^(https?):\/\/+(.+)(\.[^.]+$)/';
-		$blog_url      = preg_replace( $pattern, '$2', $blog_url );
-		$queryfeed_url = 'https://queryfeed.net/tw?q=url%3A';
-		$url           = $queryfeed_url . $blog_url;
-		$rss           = fetch_feed( $url );
+		$url = $this->get_queryfeed_url();
+		$rss = fetch_feed( $url );
 		if ( ! is_wp_error( $rss ) ) {
 			$maxitems        = $rss->get_item_quantity( 5 );
 			$this->rss_items = $rss->get_items( 0, $maxitems );
@@ -64,4 +60,68 @@ class Twitter_Egosearch {
 		// Load js.
 		wp_enqueue_script( 'twitter_egosearch', '//platform.twitter.com/widgets.js' );
 	}
+
+	/**
+	 * Get blog url.
+	 */
+	public function get_blog_url() {
+		$blog_url = get_bloginfo( 'url' );
+		$pattern  = '/^(https?):\/\/+(.+)(\.[^.]+$)/';
+		$blog_url = preg_replace( $pattern, '$2', $blog_url );
+		return 'url:' . $blog_url;
+	}
+
+	/**
+	 * Get queryfeed_url.
+	 * aaa "bbb" ccc -ddd #eee ]
+	 */
+	public function get_queryfeed_url() {
+		$queryfeed_url = 'https://queryfeed.net/tw?q=';
+		$input         = get_option( 'eg_setting' );
+		// 次のキーワードをすべて含む.
+		if ( isset( $input['key1'] ) && trim( $input['key1'] ) !== '' ) {
+			$pieces = explode( ' ', $input['key1'] );
+			$i      = 0;
+			foreach ( $pieces as $piece ) {
+				$i++;
+				if ( 1 === $i ) { // 最初は＋をつけない.
+					$queryfeed_url = $queryfeed_url . $piece;
+				} else {
+					$queryfeed_url = $queryfeed_url . '+' . $piece;
+				}
+			}
+		} else {
+			$queryfeed_url = $queryfeed_url . $this->get_blog_url();
+		}
+		// 次のキーワード全体を含む.
+		if ( isset( $input['key2'] ) && trim( $input['key2'] ) !== '' ) {
+			$pieces = explode( ' ', $input['key2'] );
+			foreach ( $pieces as $piece ) {
+				$queryfeed_url = $queryfeed_url . '+"' . $piece . '"';
+			}
+		}
+		// 次のキーワードのいずれかを含む.
+		if ( isset( $input['key3'] ) && trim( $input['key3'] ) !== '' ) {
+			$pieces = explode( ' ', $input['key3'] );
+			foreach ( $pieces as $piece ) {
+				$queryfeed_url = $queryfeed_url . '+' . $piece;
+			}
+		}
+		// 次のキーワードを含まない.
+		if ( isset( $input['key4'] ) && trim( $input['key4'] ) !== '' ) {
+			$pieces = explode( ' ', $input['key4'] );
+			foreach ( $pieces as $piece ) {
+				$queryfeed_url = $queryfeed_url . '+-' . $piece;
+			}
+		}
+		// 次のハッシュタグを含む.
+		if ( isset( $input['key5'] ) && trim( $input['key5'] ) !== '' ) {
+			$pieces = explode( ' ', $input['key5'] );
+			foreach ( $pieces as $piece ) {
+				$queryfeed_url = $queryfeed_url . '+' . $piece;
+			}
+		}
+		return $queryfeed_url;
+	}
+
 }

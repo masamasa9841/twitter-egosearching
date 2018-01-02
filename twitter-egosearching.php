@@ -8,7 +8,7 @@
 /**
  * Plugin Name: twitter-egosearching
  * Plugin URI: https://okawa.routecompass.net
- * Description: コンパス専用のsnsプラグイン
+ * Description: Twitter垢持ってない人向けのエゴサーチプラグイン
  * Version: 1.0
  * Author: Masaya Okawa
  * Author URI: https://okawa.routecompass.net
@@ -25,8 +25,9 @@
  * GNU General Public License for more details.
  */
 
-require __DIR__ . '/class-twitter-egosearch.php';
+require __DIR__ . '/class-egosearch-setting.php';
 
 if ( is_admin() ) {
+	new Egosearch_Setting();
 	new Twitter_Egosearch();
 }
