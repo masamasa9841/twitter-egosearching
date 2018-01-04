@@ -28,7 +28,14 @@ class Twitter_Egosearch {
 		$url = $this->get_queryfeed_url();
 		$rss = fetch_feed( $url );
 		if ( ! is_wp_error( $rss ) ) {
-			$maxitems        = $rss->get_item_quantity( 5 );
+			$input = get_option( 'eg_setting' );
+			// get max tweet for option.
+			if ( isset( $input['key6'] ) ) {
+				$maxitems = $rss->get_item_quantity( $input['key6'] );
+			} else {
+				// default 5.
+				$maxitems = $rss->get_item_quantity( 5 );
+			}
 			$this->rss_items = $rss->get_items( 0, $maxitems );
 			$now             = date( 'Y.m.d' );
 			$hoge            = false;

@@ -120,11 +120,11 @@ class Egosearch_Setting extends Twitter_Egosearch {
 	 */
 	public function selectbox_callback() {
 		echo '<select name="eg_setting[key6]" id="key6">';
-			printf( '<option value="%s" %s >%s</option>', 1, selected( $this->options['key6'], 1 ), 1 );
-			printf( '<option value="%s" %s >%s</option>', 2, selected( $this->options['key6'], 2 ), 2 );
-			printf( '<option value="%s" %s >%s</option>', 3, selected( $this->options['key6'], 3 ), 3 );
-			printf( '<option value="%s" %s >%s</option>', 4, selected( $this->options['key6'], 4 ), 4 );
 			printf( '<option value="%s" %s >%s</option>', 5, selected( $this->options['key6'], 5 ), 5 );
+			printf( '<option value="%s" %s >%s</option>', 4, selected( $this->options['key6'], 4 ), 4 );
+			printf( '<option value="%s" %s >%s</option>', 3, selected( $this->options['key6'], 3 ), 3 );
+			printf( '<option value="%s" %s >%s</option>', 2, selected( $this->options['key6'], 2 ), 2 );
+			printf( '<option value="%s" %s >%s</option>', 1, selected( $this->options['key6'], 1 ), 1 );
 		echo '</select>';
 	}
 	/**
