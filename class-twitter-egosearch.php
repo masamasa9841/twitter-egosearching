@@ -16,6 +16,9 @@ class Twitter_Egosearch {
 	 */
 	public function __construct() {
 		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_egosearch_metabox' ) );
+		// timezone set of WordPress.
+		$this_timezone = get_option( 'timezone_string' );
+		date_default_timezone_set( $this_timezone ); // Ignore errors.
 	}
 
 	/**
@@ -27,7 +30,7 @@ class Twitter_Egosearch {
 		if ( ! is_wp_error( $rss ) ) {
 			$maxitems        = $rss->get_item_quantity( 5 );
 			$this->rss_items = $rss->get_items( 0, $maxitems );
-			$now             = date_i18n( 'Y.m.d' );
+			$now             = date( 'Y.m.d' );
 			$hoge            = false;
 			foreach ( $this->rss_items as $item ) {
 				// Get Tweet date.
@@ -47,7 +50,7 @@ class Twitter_Egosearch {
 	 * Echo html function.
 	 */
 	public function dashboard_egosearch() {
-		$now = date_i18n( 'Y.m.d' );
+		$now = date( 'Y.m.d' );
 		foreach ( $this->rss_items as $item ) {
 			$date = $item->get_date( 'Y.m.d' );
 			if ( $date === $now ) {

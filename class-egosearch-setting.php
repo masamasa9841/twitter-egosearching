@@ -57,7 +57,7 @@ class Egosearch_Setting extends Twitter_Egosearch {
 				submit_button();
 				echo '<h3>取得するRSS(エラーが出る場合は設定を見直す)</h3>';
 				printf(
-					'<p><a href="%s" target="blank">%s</a></p>',
+					'<p style="font-size: 20px;"><strong><a href="%s" target="blank">%s</a></strong></p>',
 					esc_html( $this->get_queryfeed_url() ),
 					esc_html( $this->get_queryfeed_url() )
 				);
