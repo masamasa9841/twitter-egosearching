@@ -8,7 +8,7 @@
  */
 
 /**
- * load Main program.
+ * Load Main program.
  */
 require __DIR__ . '/class-twitter-egosearch.php';
 
