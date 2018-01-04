@@ -43,6 +43,7 @@ class Egosearch_Setting extends Twitter_Egosearch {
 		add_settings_field( 'key3', '次のキーワードのいずれかを含む', array( $this, 'key3' ), 'eg_setting', 'cp_eg_setting' );
 		add_settings_field( 'key4', '次のキーワードを含まない', array( $this, 'key4' ), 'eg_setting', 'cp_eg_setting' );
 		add_settings_field( 'key5', '次のハッシュタグを含む', array( $this, 'key5' ), 'eg_setting', 'cp_eg_setting' );
+		add_settings_field( 'key6', '表示するツイート制限', array( $this, 'selectbox_callback' ), 'eg_setting', 'cp_eg_setting' );
 	}
 	/**
 	 * Options page callback.
@@ -112,26 +113,42 @@ class Egosearch_Setting extends Twitter_Egosearch {
 		echo '<p>ハッシュタグはつける</p>';
 	}
 	/**
+	 * Get the settings option and print its values (Select Box).
+	 */
+	public function selectbox_callback() {
+		echo '<select name="eg_setting[key6]" id="key6">';
+			printf( '<option value="%s" %s >%s</option>', 1, selected( $this->options['key6'], 1 ), 1 );
+			printf( '<option value="%s" %s >%s</option>', 2, selected( $this->options['key6'], 2 ), 2 );
+			printf( '<option value="%s" %s >%s</option>', 3, selected( $this->options['key6'], 3 ), 3 );
+			printf( '<option value="%s" %s >%s</option>', 4, selected( $this->options['key6'], 4 ), 4 );
+			printf( '<option value="%s" %s >%s</option>', 5, selected( $this->options['key6'], 5 ), 5 );
+		echo '</select>';
+	}
+	/**
 	 * Sanitize each setting field as needed.
 	 *
 	 * @param array $input Contains all settings fields as array keys.
 	 */
 	public function sanitize( $input ) {
 		$new_input = array();
-		if ( isset( $input['key1'] ) && trim( $input['key1'] ) !== '' ) {
-			$new_input['key1'] = sanitize_text_field( $input['key1'] );
-		}
-		if ( isset( $input['key2'] ) && trim( $input['key2'] ) !== '' ) {
-			$new_input['key2'] = sanitize_text_field( $input['key2'] );
-		}
-		if ( isset( $input['key3'] ) && trim( $input['key3'] ) !== '' ) {
-			$new_input['key3'] = sanitize_text_field( $input['key3'] );
-		}
-		if ( isset( $input['key4'] ) && trim( $input['key4'] ) !== '' ) {
-			$new_input['key4'] = sanitize_text_field( $input['key4'] );
-		}
-		if ( isset( $input['key5'] ) && trim( $input['key5'] ) !== '' ) {
-			$new_input['key5'] = sanitize_text_field( $input['key5'] );
+		$new_input = $this->santize_text( 'key1', $input, $new_input );
+		$new_input = $this->santize_text( 'key2', $input, $new_input );
+		$new_input = $this->santize_text( 'key3', $input, $new_input );
+		$new_input = $this->santize_text( 'key4', $input, $new_input );
+		$new_input = $this->santize_text( 'key5', $input, $new_input );
+		$new_input = $this->santize_text( 'key6', $input, $new_input );
+		return $new_input;
+	}
+	/**
+	 * Sanitize each setting field as needed for text.
+	 *
+	 * @param string $key Key.
+	 * @param array  $input Contains all settings fields as array keys.
+	 * @param array  $new_input Contains all settings fields as array keys.
+	 */
+	public function santize_text( $key, $input, $new_input ) {
+		if ( isset( $input[ $key ] ) && trim( $input[ $key ] ) !== '' ) {
+			$new_input[ $key ] = sanitize_text_field( $input[ $key ] );
 		}
 		return $new_input;
 	}
