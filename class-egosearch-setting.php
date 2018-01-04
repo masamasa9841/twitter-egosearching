@@ -7,6 +7,9 @@
  * @license GPL-2.0+
  */
 
+/**
+ * load Main program.
+ */
 require __DIR__ . '/class-twitter-egosearch.php';
 
 /**
