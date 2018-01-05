@@ -16,9 +16,6 @@ class Twitter_Egosearch {
 	 */
 	public function __construct() {
 		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_egosearch_metabox' ) );
-		// timezone set of WordPress.
-		$this_timezone = get_option( 'timezone_string' );
-		date_default_timezone_set( $this_timezone ); // Ignore errors.
 	}
 
 	/**
@@ -37,11 +34,11 @@ class Twitter_Egosearch {
 				$maxitems = $rss->get_item_quantity( 5 );
 			}
 			$this->rss_items = $rss->get_items( 0, $maxitems );
-			$now             = date( 'Y.m.d' );
+			$now             = date_i18n( 'Y.m.d' );
 			$hoge            = false;
 			foreach ( $this->rss_items as $item ) {
 				// Get Tweet date.
-				$date = $item->get_date( 'Y.m.d' );
+				$date = date( 'Y.m.d', strtotime( get_date_from_gmt( $item->get_date( 'Y-m-d H:i:s' ) ) ) );
 				if ( $date === $now ) {
 					$hoge = true;
 				}
@@ -57,9 +54,9 @@ class Twitter_Egosearch {
 	 * Echo html function.
 	 */
 	public function dashboard_egosearch() {
-		$now = date( 'Y.m.d' );
+		$now = date_i18n( 'Y.m.d' );
 		foreach ( $this->rss_items as $item ) {
-			$date = $item->get_date( 'Y.m.d' );
+			$date = date( 'Y.m.d', strtotime( get_date_from_gmt( $item->get_date( 'Y-m-d H:i:s' ) ) ) );
 			if ( $date === $now ) {
 				$link = $item->get_link();
 				echo '<blockquote class="twitter-tweet" data-cards="hidden" lang="ja"><p>';
