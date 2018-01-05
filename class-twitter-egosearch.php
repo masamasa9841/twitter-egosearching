@@ -19,10 +19,18 @@ class Twitter_Egosearch {
 	}
 
 	/**
+	 * Cache time.
+	 */
+	public function return_cache() {
+		// 10
+		return 600;
+	}
+	/**
 	 * Dashboad function.
 	 */
 	public function add_dashboard_egosearch_metabox() {
 		$url = $this->get_queryfeed_url();
+		add_filter( 'wp_feed_cache_transient_lifetime', array( $this, 'return_cache' ) );
 		$rss = fetch_feed( $url );
 		if ( ! is_wp_error( $rss ) ) {
 			$input = get_option( 'eg_setting' );
